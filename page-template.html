@@ -1,0 +1,111 @@
+<!-- This is my reusable template for all tabs -->
+ <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><!--TITLE--></title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./pages.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-dot"></div>
+        <div class="brand-text">
+          <div class="brand-name">OnTrak4x4</div>
+          <div class="brand-sub">Ordering & Logistics</div>
+        </div>
+      </div>
+      <nav class="menu" id="menu"></nav>
+      <div class="sidebar-footer"><small>© 2018–2024 Lumenabra</small></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="left">
+          <button class="icon-btn" id="toggleSidebar">☰</button>
+          <h1 class="page-title"><!--HEADING--></h1>
+        </div>
+
+        <div class="right">
+          <select class="select">
+            <option>Search By...</option>
+            <option>Case ID</option>
+            <option>User</option>
+            <option>Order</option>
+          </select>
+          <div class="search">
+            <input class="search-input" placeholder="Enter Quick Search" />
+            <button class="search-btn">🔍</button>
+          </div>
+
+          <!-- User dropdown (same as dashboard) -->
+          <div class="user-dropdown" id="userDropdown">
+            <button class="user-btn" id="userBtn" aria-haspopup="menu" aria-expanded="false">
+              <div class="user-meta">
+                <div class="user-name">Hello, Pratosh</div>
+                <div class="user-role">Sub Admin | ID: AD00013</div>
+              </div>
+              <div class="avatar">P</div>
+            </button>
+            <div class="user-menu" id="userMenu" role="menu">
+              <button class="user-menu-item" id="editProfileBtn"><span class="umi-icon">👤</span>Edit Profile</button>
+              <button class="user-menu-item" id="retailModeBtn"><span class="umi-icon">🛍️</span>Activate Retail Mode</button>
+              <div class="user-menu-divider"></div>
+              <button class="user-menu-item danger" id="logoutBtn"><span class="umi-icon">⏻</span>Logout</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-head">
+        <div class="crumbs">
+          <a href="./index.html">Dashboard</a>
+          <span>›</span>
+          <span><!--CRUMB--></span>
+        </div>
+      </div>
+
+      <section class="panel">
+        <!-- Tabs (all working links) -->
+        <div class="tabs">
+          <a class="tab" data-tab="profile" href="./profile.html">Basic Information</a>
+          <a class="tab" data-tab="fleet" href="./my-fleet.html">Fleets</a>
+          <a class="tab" data-tab="usage" href="./my-usage-log.html">Usage Logs</a>
+          <a class="tab" data-tab="vehicles" href="./my-vehicle.html">Vehicles</a>
+          <a class="tab" data-tab="comm" href="./my-commissions.html">Commissions List</a>
+          <a class="tab" data-tab="commLog" href="./my-commissions-log.html">Commissions Log</a>
+          <a class="tab" data-tab="support" href="./my-support-tickets.html">Support Cases</a>
+        </div>
+
+        <div class="page-body">
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="legal">
+          <strong>Website Legal Notices</strong>
+          <div class="links">
+            <a href="#">Terms of Service Use</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Cookie Policy</a>
+          </div>
+        </div>
+        <div class="copy">© 2018–2024 Lumenabra. All Rights Reserved.</div>
+      </footer>
+    </main>
+  </div>
+
+  <script src="./app.js"></script>
+  <script src="./pages.js"></script>
+
+  <script>
+    const active = "<!--ACTIVE-->";
+    document.querySelectorAll(".tabs .tab").forEach(a=>{
+      if(a.dataset.tab === active) a.classList.add("active");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commissions Log</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./pages.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-dot"></div>
+        <div class="brand-text">
+          <div class="brand-name">OnTrak4x4</div>
+          <div class="brand-sub">Ordering & Logistics</div>
+        </div>
+      </div>
+      <nav class="menu" id="menu"></nav>
+      <div class="sidebar-footer"><small>© 2018–2024 Lumenabra</small></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="left">
+          <button class="icon-btn" id="toggleSidebar">☰</button>
+          <h1 class="page-title">Commissions Log</h1>
+        </div>
+        <div class="right">
+          <select class="select"><option>Search By...</option></select>
+          <div class="search">
+            <input class="search-input" placeholder="Enter Quick Search" />
+            <button class="search-btn">🔍</button>
+          </div>
+
+          <div class="user-dropdown" id="userDropdown">
+            <button class="user-btn" id="userBtn" aria-haspopup="menu" aria-expanded="false">
+              <div class="user-meta">
+                <div class="user-name">Hello, Pratosh</div>
+                <div class="user-role">Sub Admin | ID: AD00013</div>
+              </div>
+              <div class="avatar">P</div>
+            </button>
+            <div class="user-menu" id="userMenu" role="menu">
+              <button class="user-menu-item" id="editProfileBtn"><span class="umi-icon">👤</span>Edit Profile</button>
+              <button class="user-menu-item" id="retailModeBtn"><span class="umi-icon">🛍️</span>Activate Retail Mode</button>
+              <div class="user-menu-divider"></div>
+              <button class="user-menu-item danger" id="logoutBtn"><span class="umi-icon">⏻</span>Logout</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-head">
+        <div class="crumbs">
+          <a href="./index.html">Dashboard</a><span>›</span><span>Commissions Log</span>
+        </div>
+      </div>
+
+      <section class="panel">
+        <div class="tabs">
+          <a class="tab" href="./profile.html">Basic Information</a>
+          <a class="tab" href="./my-fleet.html">Fleets</a>
+          <a class="tab" href="./my-usage-log.html">Usage Logs</a>
+          <a class="tab" href="./my-vehicle.html">Vehicles</a>
+          <a class="tab" href="./my-commissions.html">Commissions List</a>
+          <a class="tab active" href="./my-commissions-log.html">Commissions Log</a>
+          <a class="tab" href="./my-support-tickets.html">Support Cases</a>
+        </div>
+
+        <div class="page-body">
+          <div class="section-head">
+            <div>
+              <div class="section-title">Commission Payments Log</div>
+              <div class="section-sub">Records of commission payments (demo working).</div>
+            </div>
+            <button class="btn-primary" id="addLogBtn">+ Add Payment Log</button>
+          </div>
+
+          <div class="filters" style="grid-template-columns: 1fr 1fr auto auto;">
+            <input id="logOrderFilter" placeholder="Order Number" />
+            <input id="logCommissionFilter" placeholder="Commission ID" />
+            <button class="btn-secondary" id="logSearchBtn">Search</button>
+            <button class="btn-secondary" id="logClearBtn">Clear</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Order #</th>
+                  <th>Commission ID</th>
+                  <th>Title</th>
+                  <th>Amount Paid</th>
+                  <th>Paid At</th>
+                  <th>Attachment</th>
+                </tr>
+              </thead>
+              <tbody id="logTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="legal"><strong>Website Legal Notices</strong>
+          <div class="links"><a href="#">Terms of Service Use</a><a href="#">Privacy Policy</a><a href="#">Cookie Policy</a></div>
+        </div>
+        <div class="copy">© 2018–2024 Lumenabra. All Rights Reserved.</div>
+      </footer>
+    </main>
+  </div>
+
+  <script src="./app.js"></script>
+  <script src="./pages.js"></script>
+
+  <script>
+    const KEY = "commissions_log_demo";
+    const defaultData = [
+      { order:"ORD-2002", cid:"C-9002", title:"Commission paid", amount:40, paidAt:"2026-02-06 10:15", attachment:"receipt_9002.pdf" },
+    ];
+    const load = () => JSON.parse(localStorage.getItem(KEY) || "null") || defaultData;
+    const save = (x) => localStorage.setItem(KEY, JSON.stringify(x));
+    let rows = load();
+
+    function render(list){
+      const tbody = document.getElementById("logTbody");
+      tbody.innerHTML = "";
+      if(list.length === 0){
+        tbody.innerHTML = `<tr><td colspan="6" style="color:#6b7280;padding:14px;">No commission logs found.</td></tr>`;
+        return;
+      }
+      list.forEach(r=>{
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${r.order}</td>
+          <td>${r.cid}</td>
+          <td>${r.title}</td>
+          <td>$${r.amount}</td>
+          <td>${r.paidAt}</td>
+          <td><a href="#" onclick="alert('Demo: open attachment')">${r.attachment}</a></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function applyFilter(){
+      const o = document.getElementById("logOrderFilter").value.toLowerCase();
+      const c = document.getElementById("logCommissionFilter").value.toLowerCase();
+      const filtered = rows.filter(r=>{
+        const okO = !o || r.order.toLowerCase().includes(o);
+        const okC = !c || r.cid.toLowerCase().includes(c);
+        return okO && okC;
+      });
+      render(filtered);
+    }
+
+    document.getElementById("logSearchBtn").addEventListener("click", applyFilter);
+    document.getElementById("logClearBtn").addEventListener("click", ()=>{
+      document.getElementById("logOrderFilter").value = "";
+      document.getElementById("logCommissionFilter").value = "";
+      render(rows);
+    });
+
+    document.getElementById("addLogBtn").addEventListener("click", ()=>{
+      const order = prompt("Order Number?", "ORD-2003") || "ORD-2003";
+      const cid = prompt("Commission ID?", "C-9003") || "C-9003";
+      rows.unshift({
+        order,
+        cid,
+        title:"Commission payment",
+        amount: Number(prompt("Amount Paid?", "50")) || 50,
+        paidAt: new Date().toISOString().slice(0,16).replace("T"," "),
+        attachment: "receipt_" + cid + ".pdf"
+      });
+      save(rows);
+      render(rows);
+    });
+
+    render(rows);
+  </script>
+</body>
+</html>

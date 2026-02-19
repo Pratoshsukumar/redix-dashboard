@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OnTrak4x4 - Login</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="login-body">
+  <div class="login-overlay"></div>
+
+  <main class="login-wrap">
+    <section class="login-card">
+      <div class="login-logo">OnTrak4x4</div>
+
+      <form id="loginForm" class="login-form">
+        <label class="login-label">Email Address</label>
+        <input class="login-input" type="email" required placeholder="Email Address" />
+
+        <label class="login-label">Password</label>
+        <input class="login-input" type="password" required placeholder="Enter Password" />
+
+        <div class="login-row">
+          <label class="login-check">
+            <input type="checkbox" />
+            Remember Me
+          </label>
+          <a class="login-link" href="#">Forgot Password?</a>
+        </div>
+
+        <button class="login-btn" type="submit">LOGIN</button>
+
+        <div class="login-divider"><span>New User?</span></div>
+        <button class="login-btn outline" type="button">REGISTER</button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    // Fake login (I'll just replace with real values later)
+    document.getElementById("loginForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      localStorage.setItem("isLoggedIn", "true");
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
