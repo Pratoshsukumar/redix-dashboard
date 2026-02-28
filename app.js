@@ -258,6 +258,55 @@ const tabsEl = document.getElementById("roleTabs");
 
 let currentRole = "Sub Admin";
 
+// Role-based dashboard visibility
+// Shows/hides KPI row, quick stats, recent activity etc based on selected role
+function applyRoleDashboard() {
+  const kpiCards = document.getElementById("kpiCards");
+  const chartsRow = document.getElementById("chartsRow");
+  const quickStats = document.getElementById("quickStats");
+  const recentActivity = document.getElementById("recentActivity");
+
+  // helper: toggle visibility
+  const show = (el, shouldShow) => {
+    if (!el) return;
+    el.classList.toggle("is-hidden", !shouldShow);
+  };
+
+  // Default (show all)
+  show(kpiCards, true);
+  show(chartsRow, true);
+  show(quickStats, true);
+  show(recentActivity, true);
+
+  // Role rules
+  if (currentRole === "Super Admin") {
+    // Full visibility
+  }
+
+  if (currentRole === "Sub Admin") {
+    // Full visibility (The super admin can also edit what fields the sub admin can view )
+  }
+
+  if (currentRole === "Workshop") {
+    // Workshops usually care about orders + processing, not total visitors
+    // Keep charts + quick stats + recent activity visible
+    // (Optional: hide KPI row if you want it cleaner)
+    // show(kpiCards, false);
+  }
+
+  if (currentRole === "Delivery Agent") {
+    // Delivery agent: hide top KPI cards (sales/visitors), keep donut+charts + quick stats + recent orders
+    show(kpiCards, false);
+  }
+
+  if (currentRole === "Customer") {
+    // Customer: hide admin KPIs + charts (optional), keep quick stats + recent orders
+    show(kpiCards, false);
+    // If you want customers to NOT see charts, uncomment:
+    // show(chartsRow, false);
+  }
+}
+
 // Render Sidebar Menu
 // Dynamically builds the left navigationusing the MENU configuration above.
 // This keeps the sidebar scalable and easy to maintain.
@@ -296,6 +345,7 @@ function renderTabs() {
       currentRole = role;
       renderTabs();
       renderGrid();
+      applyRoleDashboard();
     };
     tabsEl.appendChild(btn);
   });
@@ -466,6 +516,7 @@ document.getElementById("logoutBtn")?.addEventListener("click", () => {
 renderMenu();
 renderTabs();
 renderGrid();
+applyRoleDashboard();
 
 
 // Enhanced Search Logic
@@ -615,3 +666,159 @@ function updateClock() {
 
 setInterval(updateClock, 1000);
 updateClock();
+
+//Revenue graph.
+const ctx = document.getElementById('salesChart');
+
+if (ctx) {
+
+  //  These are demo numbers to test that the graph responds to that numbers.
+  const revenueData = {
+    "7d": {
+      labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+      revenue: [12000, 19000, 14000, 22000, 18000, 25000, 21000],
+      orders:  [5200,  6100,  4800,  7200,  6400,  8600,  7000]
+    },
+
+    "1m": {
+      labels: ['Wk1','Wk2','Wk3','Wk4'],
+      revenue: [68000, 72000, 69000, 78000],
+      orders:  [22000, 24500, 23800, 26000]
+    },
+
+    "6m": {
+      labels: ['Sep','Oct','Nov','Dec','Jan','Feb'],
+      revenue: [240000, 260000, 255000, 275000, 290000, 310000],
+      orders:  [82000,  88000,  86000,  91000,  94000,  99000]
+    },
+
+    "1y": {
+      labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+      revenue: [120000, 180000, 140000, 220000, 210000, 250000, 190000, 230000, 260000, 280000, 240000, 300000],
+      orders:  [80000,   90000,  70000, 100000,  95000, 120000, 110000, 130000, 125000, 140000, 135000, 150000]
+    },
+
+    "2y": {
+      labels: ['2025 Q1','2025 Q2','2025 Q3','2025 Q4','2026 Q1','2026 Q2','2026 Q3','2026 Q4'],
+      revenue: [520000, 610000, 580000, 690000, 640000, 720000, 705000, 780000],
+      orders:  [190000, 210000, 205000, 235000, 220000, 245000, 238000, 260000]
+    },
+
+    "all": {
+      labels: ['2022','2023','2024','2025','2026'],
+      revenue: [1800000, 2200000, 2600000, 3100000, 3700000],
+      orders:  [620000,  740000,  860000,  980000,  1150000]
+    }
+  };
+
+  let currentRange = "7d";
+
+  const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: revenueData[currentRange].labels,
+      datasets: [
+        {
+          label: 'Revenue',
+          data: revenueData[currentRange].revenue,
+          borderColor: '#f07a28',
+          backgroundColor: 'rgba(240,122,40,0.15)',
+          tension: 0.4,
+          borderWidth: 3,
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          fill: true
+        },
+        {
+          label: 'Orders',
+          data: revenueData[currentRange].orders,
+          borderColor: '#f7b267',
+          borderDash: [6, 6],
+          tension: 0.4,
+          borderWidth: 2,
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          fill: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+
+      interaction: { mode: 'index', intersect: false },
+
+      plugins: {
+        legend: {
+          display: true,
+          labels: { usePointStyle: true, boxWidth: 8 }
+        },
+        tooltip: {
+          enabled: true,
+          backgroundColor: '#ffffff',
+          titleColor: '#111',
+          bodyColor: '#111',
+          borderColor: '#e5e7eb',
+          borderWidth: 1,
+          padding: 10
+        }
+      },
+
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: 'rgba(0,0,0,0.05)' } }
+      }
+    }
+  });
+
+  // dropdown for the graph 
+  window.switchRevenueRange = function (event) {
+    const selected = event.target.value;
+    if (!revenueData[selected]) return;
+
+    currentRange = selected;
+
+    chart.data.labels = revenueData[selected].labels;
+    chart.data.datasets[0].data = revenueData[selected].revenue;
+    chart.data.datasets[1].data = revenueData[selected].orders;
+
+    chart.update();
+  };
+}
+
+
+// Donut Chart -  Gives a quick snapshot of order statuses (Pending, Completed, Cancelled) 
+
+const donutCtx = document.getElementById('orderStatusChart');
+
+if (donutCtx) {
+  new Chart(donutCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Pending', 'Completed', 'Cancelled'],
+      datasets: [{
+        data: [32, 48, 20],
+        backgroundColor: ['#f59e0b', '#16a34a', '#dc2626'],
+        hoverOffset:8,
+        borderWidth: 0
+      }]
+    },
+options: {
+  cutout:'70%',
+  responsive: true,
+  maintainAspectRatio: false,
+
+  interaction: {
+    mode: 'nearest',
+    intersect: true
+  },
+
+  plugins: {
+    legend: { display: false },
+    tooltip: {
+      enabled: true
+    }
+  }
+}
+  });
+}

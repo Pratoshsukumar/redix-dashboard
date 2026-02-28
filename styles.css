@@ -848,3 +848,366 @@ body.sidebar-hidden .sidebar{
 body.dark-mode .live-clock {
   color: #fff;
 }
+
+/* ===== ANALYTICS DASHBOARD ===== */
+
+.analytics {
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.analytics-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+  transition: 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 10px 0;
+}
+
+.stat-change {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.stat-change.positive {
+  color: #16a34a;
+}
+
+.stat-change.negative {
+  color: #dc2626;
+}
+
+.analytics-chart {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+/* Style section for charts */
+
+.analytics-charts{
+  display: grid;
+  grid-template-columns: 2fr 1fr;  
+  gap: 18px;
+  align-items: start;
+}
+
+@media (max-width: 950px){
+  .analytics-charts{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Make both chart cards behave nicely */
+.analytics-chart{
+  width: 100%;
+}
+
+/* It controls the donut's height */
+.analytics-chart canvas{
+  width: 100% !important;
+  height: 280px !important;
+}
+.donut-panel{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.donut-panel canvas{
+  max-width: 260px;
+  max-height: 260px;
+}
+/* Optional: it just prevents donut from stretching wider than its card */
+#orderStatusChart{
+  max-width: 260px;
+  margin: 0 auto; 
+  display: block;
+}
+
+.donut-wrap{
+  display: grid;
+  grid-template-columns: 1fr; 
+  gap: 12px;
+}
+
+.analytics-chart canvas {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 5;
+}
+
+
+/* Recent Activity Table  */
+
+.recent-activity{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px 18px;
+}
+
+.recent-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.recent-head h3{
+  margin:0;
+  font-size:16px;
+  font-weight:800;
+}
+
+.recent-link{
+  font-size: 12px;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
+.recent-link:hover{ text-decoration: underline; }
+
+.recent-table-wrap{
+  width: 100%;
+  overflow-x: auto;
+}
+
+.recent-table{
+   width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  table-layout: fixed; /* helps alignment */
+}
+
+.recent-table thead th{
+ text-align: left;
+  color: var(--muted);
+  font-weight: 700;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.recent-table tbody td{
+padding: 12px 8px;
+  border-bottom: none;            
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.recent-table tbody tr{
+  border-bottom: 1px solid var(--border);  
+}
+
+.recent-table tbody tr:hover{
+  background: #fafafa;
+}
+
+/* Make Order IDs look “system-y” */
+.recent-table td:first-child{
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.right{
+  text-align: right;
+}
+
+.status{
+  display:inline-flex;
+  align-items:center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.status.pending{
+  background: rgba(245,158,11,0.15);
+  color: #b45309;
+}
+
+.status.completed{
+  background: rgba(22,163,74,0.15);
+  color: #15803d;
+}
+
+.status.cancelled{
+  background: rgba(220,38,38,0.15);
+  color: #b91c1c;
+}
+
+/* Quick Stats Row (Secondary KPIs) */
+
+.quick-stats{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+@media (max-width: 1100px){
+  .quick-stats{
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+  }
+}
+@media (max-width: 560px){
+  .quick-stats{
+    grid-template-columns: 1fr;
+  }
+}
+
+.quick-stat{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 14px 16px;
+}
+
+.qs-label{
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.qs-value{
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.qs-meta{
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.qs-meta.positive{ color:#16a34a; }
+.qs-meta.negative{ color:#dc2626; }
+
+
+/* Role-based visibility helper */
+.is-hidden{
+  display: none !important;
+}
+
+/* Enhancing texts for dark mode */
+body.dark-mode {
+  background-color: #121212;
+  color: #f3f4f6;
+}
+
+body.dark-mode .stat-card,
+body.dark-mode .analytics-chart,
+body.dark-mode .quick-stat,
+body.dark-mode .recent-activity {
+  background-color: #1f1f1f;
+  border: 1px solid #2d2d2d;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode .stat-value,
+body.dark-mode .qs-value {
+  color: #ffffff;
+}
+
+body.dark-mode .brand-sub,
+body.dark-mode .hint,
+body.dark-mode .qs-label,
+body.dark-mode .recent-table thead th {
+  color: #cbd5e1; 
+}
+
+body.dark-mode .recent-table tbody td {
+  color: #e5e7eb;
+}
+
+body.dark-mode .menu-item {
+  color: #e5e7eb;
+}
+
+body.dark-mode .menu-item:hover {
+  background: #2a2a2a;
+}
+
+body.dark-mode .donut-panel span {
+  color: #f3f4f6;
+}
+
+body.dark-mode .status.pending {
+  background: rgba(245,158,11,0.25);
+  color: #fbbf24;
+}
+
+body.dark-mode .status.completed {
+  background: rgba(22,163,74,0.25);
+  color: #4ade80;
+}
+
+body.dark-mode .status.cancelled {
+  background: rgba(220,38,38,0.25);
+  color: #f87171;
+}
+
+
+/* Donut Chart Legend Styling */
+
+.donut-legend {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/* Match donut colors */
+.dot.pending {
+  background-color: #f59e0b; /* orange */
+}
+
+.dot.completed {
+  background-color: #16a34a; /* green */
+}
+
+.dot.cancelled {
+  background-color: #dc2626; /* red */
+}
+
